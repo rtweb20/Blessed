@@ -69,19 +69,19 @@ public class DataLoader implements CommandLineRunner {
         if (servicioRepository.count() == 0) {
             Servicio s1 = new Servicio();
             s1.setNombre("Corte de pelo");
-            s1.setPrecio(12000.0);
+            s1.setPrecio(13000.0);
             s1.setActivo(true);
             servicioRepository.save(s1);
 
             Servicio s2 = new Servicio();
             s2.setNombre("Corte y Barba");
-            s2.setPrecio(14000.0);
+            s2.setPrecio(15000.0);
             s2.setActivo(true);
             servicioRepository.save(s2);
 
             Servicio s3 = new Servicio();
             s3.setNombre("Barba");
-            s3.setPrecio(5000.0);
+            s3.setPrecio(6000.0);
             s3.setActivo(true);
             servicioRepository.save(s3);
 
@@ -105,14 +105,42 @@ public class DataLoader implements CommandLineRunner {
 
             Servicio s7 = new Servicio();
             s7.setNombre("Rapado y Barba");
-            s7.setPrecio(6000.0);
+            s7.setPrecio(7000.0);
             s7.setActivo(true);
             servicioRepository.save(s7);
 
             System.out.println(">>> ✅ 7 servicios creados");
         }
 
+        actualizarPreciosCatalogo();
+
         System.out.println(">>> TOTAL: " + barberoRepository.count() + " barberos, " + servicioRepository.count() + " servicios");
         System.out.println("==========================================");
+    }
+
+    private void actualizarPreciosCatalogo() {
+        List<Servicio> servicios = servicioRepository.findAll();
+        for (Servicio servicio : servicios) {
+            String nombre = servicio.getNombre();
+            if (nombre == null) continue;
+
+            boolean actualizar = false;
+            if (nombre.equalsIgnoreCase("Corte de pelo")) {
+                servicio.setPrecio(13000.0);
+                actualizar = true;
+            } else if (nombre.equalsIgnoreCase("Corte y Barba")) {
+                servicio.setPrecio(15000.0);
+                actualizar = true;
+            } else if (nombre.equalsIgnoreCase("Barba")) {
+                servicio.setPrecio(6000.0);
+                actualizar = true;
+            } else if (nombre.equalsIgnoreCase("Rapado y Barba")) {
+                servicio.setPrecio(7000.0);
+                actualizar = true;
+            }
+
+            if (actualizar) servicioRepository.save(servicio);
+        }
+
     }
 }
